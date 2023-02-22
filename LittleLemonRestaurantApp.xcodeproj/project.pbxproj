@@ -12,6 +12,8 @@
 		D364DF7129A2AA4500EE65C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D364DF7029A2AA4500EE65C5 /* Preview Assets.xcassets */; };
 		D364DF7829A2AA6A00EE65C5 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D364DF7729A2AA6A00EE65C5 /* OnboardingView.swift */; };
 		D3A8C89829A549A100141B22 /* DishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A8C89729A549A100141B22 /* DishView.swift */; };
+		D3A8C89B29A61B9700141B22 /* Dish+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A8C89929A61B9700141B22 /* Dish+CoreDataClass.swift */; };
+		D3A8C89C29A61B9700141B22 /* Dish+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A8C89A29A61B9700141B22 /* Dish+CoreDataProperties.swift */; };
 		D3BEA68329A3F8C200CF7679 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BEA68129A3F8C200CF7679 /* Persistence.swift */; };
 		D3BEA68429A3F8C200CF7679 /* FetchedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BEA68229A3F8C200CF7679 /* FetchedObjects.swift */; };
 		D3BEA68729A3F8F400CF7679 /* MenuItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BEA68629A3F8F400CF7679 /* MenuItemModel.swift */; };
@@ -29,6 +31,8 @@
 		D364DF7029A2AA4500EE65C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D364DF7729A2AA6A00EE65C5 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		D3A8C89729A549A100141B22 /* DishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DishView.swift; sourceTree = "<group>"; };
+		D3A8C89929A61B9700141B22 /* Dish+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Dish+CoreDataClass.swift"; path = "LittleLemonRestaurantApp/Core Data/Classes/Dish+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D3A8C89A29A61B9700141B22 /* Dish+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Dish+CoreDataProperties.swift"; path = "LittleLemonRestaurantApp/Core Data/Classes/Dish+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D3BEA68129A3F8C200CF7679 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		D3BEA68229A3F8C200CF7679 /* FetchedObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedObjects.swift; sourceTree = "<group>"; };
 		D3BEA68629A3F8F400CF7679 /* MenuItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemModel.swift; sourceTree = "<group>"; };
@@ -53,6 +57,8 @@
 		D364DF5D29A2AA4400EE65C5 = {
 			isa = PBXGroup;
 			children = (
+				D3A8C89929A61B9700141B22 /* Dish+CoreDataClass.swift */,
+				D3A8C89A29A61B9700141B22 /* Dish+CoreDataProperties.swift */,
 				D364DF6829A2AA4400EE65C5 /* LittleLemonRestaurantApp */,
 				D364DF6729A2AA4400EE65C5 /* Products */,
 			);
@@ -190,11 +196,13 @@
 			files = (
 				D3BEA68A29A4A14C00CF7679 /* MenuItemDatabase.xcdatamodeld in Sources */,
 				D364DF7829A2AA6A00EE65C5 /* OnboardingView.swift in Sources */,
+				D3A8C89C29A61B9700141B22 /* Dish+CoreDataProperties.swift in Sources */,
 				D3A8C89829A549A100141B22 /* DishView.swift in Sources */,
 				D3E6527329A337460048455D /* HomeView.swift in Sources */,
 				D3BEA68729A3F8F400CF7679 /* MenuItemModel.swift in Sources */,
 				D3E6527729A350F20048455D /* UserProfileView.swift in Sources */,
 				D3BEA68329A3F8C200CF7679 /* Persistence.swift in Sources */,
+				D3A8C89B29A61B9700141B22 /* Dish+CoreDataClass.swift in Sources */,
 				D3BEA68429A3F8C200CF7679 /* FetchedObjects.swift in Sources */,
 				D3E6527929A357E90048455D /* K.swift in Sources */,
 				D3E6527529A33B540048455D /* MenuView.swift in Sources */,

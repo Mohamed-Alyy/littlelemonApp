@@ -9,13 +9,17 @@ import SwiftUI
 import CoreData
 
 struct MenuView: View {
-    @EnvironmentObject var menuItem: MenuItem
+    //@EnvironmentObject var menuItem: MenuItem
     @Environment(\.managedObjectContext) var viewContext
-    @FetchRequest(
-        sortDescriptors: [
-            SortDescriptor(\Dish.title, order: .reverse)
-        ]
-    ) var dishes: FetchedResults<Dish>
+    @State var searchText = ""
+//    @FetchRequest(
+//
+//        sortDescriptors: [
+//            NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString().localizedStandardCompare))
+//        ]
+//        //, predicate: buildPredicate()
+//        ,animation: .default
+//    ) var dishes: FetchedResults<Dish>
     
     
     var body: some View {
@@ -24,35 +28,57 @@ struct MenuView: View {
             Text("Location")
             Text("Description")
             
-            List{
-                ForEach(dishes) { dish in
-                    NavigationLink(destination: EmptyView()) {
-                        HStack{
-                            Text(dish.title!)
-                            Text("Price:\(dish.price!) $")
-                            Spacer()
-                            AsyncImage(url: URL(string: dish.image!)) { image in
-                                image.resizable()
-                                    .frame(width: 100 , height: 100)
-                            } placeholder: {
-                                ProgressView()
+        NavigationView {
+            
+            
+                
+                FetchedObjects(predicate: buildPredicate(), sortDescriptors: buildSortDescriptor()) {(dishes: [Dish]) in
+                    
+                    List{
+                        ForEach(dishes) { dish in
+                            NavigationLink(destination: EmptyView()) {
+                                
+                                
+                                HStack{
+                                    VStack (alignment: .leading){
+                                        Text(dish.title!)
+                                            .fixedSize()
+                                        Text("Price:\(dish.price!) $")
+                                    }
                                     
+                                    Spacer()
+                                    AsyncImage(url: URL(string: dish.image!)) { image in
+                                        image.resizable()
+                                            .frame(width: 100 , height: 100)
+                                    } placeholder: {
+                                        ProgressView()
+                                        
+                                    }
+                                    
+                                }
+                                
                             }
-
+                            
                         }
                     }
-                  
+                    
                 }
             }
-            
+            .onAppear {
+                
+                getMenuData(from: K.Url)
+            }
         }
-        .onAppear {
-            
-            getMenuData(from: K.Url)
-        }
-        
+        .searchable(text: $searchText)
     } // body end
         
+    private func buildSortDescriptor()->[NSSortDescriptor]{
+        [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedStandardCompare))]
+    }
+  
+    private func buildPredicate()-> NSPredicate {
+        return searchText.isEmpty ? NSPredicate(value: true) :NSPredicate(format: "title CONTAINS [cd] %@", searchText)
+    }
     
         func getMenuData (from basUrl: String){
             PersistenceController().clear()
