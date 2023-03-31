@@ -9,116 +9,72 @@ import SwiftUI
 import CoreData
 
 struct MenuView: View {
-    //@EnvironmentObject var menuItem: MenuItem
+   
+    @Environment(\.presentationMode) var presentaionMode
     @Environment(\.managedObjectContext) var viewContext
+  
     @State var searchText = ""
-//    @FetchRequest(
-//
-//        sortDescriptors: [
-//            NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString().localizedStandardCompare))
-//        ]
-//        //, predicate: buildPredicate()
-//        ,animation: .default
-//    ) var dishes: FetchedResults<Dish>
-    
     
     var body: some View {
         VStack{
-            Text("App Name")
-            Text("Location")
-            Text("Description")
-            
-        NavigationView {
-            
-            
+            NavigationView {
                 
-                FetchedObjects(predicate: buildPredicate(), sortDescriptors: buildSortDescriptor()) {(dishes: [Dish]) in
+                FetchedObjects(predicate: Helper.buildPredicate(searchText: searchText), sortDescriptors: Helper.buildSortDescriptor()) {(dishes: [Dish]) in
                     
                     List{
                         ForEach(dishes) { dish in
-                            NavigationLink(destination: EmptyView()) {
-                                
+                            
+                            NavigationLink(destination: DishView(dish: dish)) {
                                 
                                 HStack{
                                     VStack (alignment: .leading){
                                         Text(dish.title!)
+                                            .fontWeight(.bold)
                                             .fixedSize()
-                                        Text("Price:\(dish.price!) $")
+                                        Text(dish.descrip!)
+                                            .fontWeight(.thin)
+                                        Text("$\(dish.price!)")
+                                            .fontWeight(.bold)
+                                        
                                     }
                                     
                                     Spacer()
                                     AsyncImage(url: URL(string: dish.image!)) { image in
                                         image.resizable()
                                             .frame(width: 100 , height: 100)
+                                            .cornerRadius(10)
+                                        
                                     } placeholder: {
                                         ProgressView()
                                         
                                     }
-                                    
                                 }
                                 
                             }
-                            
                         }
+                        .listStyle(.grouped)
                     }
-                    
                 }
-            }
+                .searchable(text: $searchText)
+            }// navigation view
             .onAppear {
+                Helper.getMenuData(from: Helper.Url, context: viewContext)
                 
-                getMenuData(from: K.Url)
             }
-        }
-        .searchable(text: $searchText)
+        }// main vstack
+        
+        
     } // body end
-        
-    private func buildSortDescriptor()->[NSSortDescriptor]{
-        [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedStandardCompare))]
-    }
-  
-    private func buildPredicate()-> NSPredicate {
-        return searchText.isEmpty ? NSPredicate(value: true) :NSPredicate(format: "title CONTAINS [cd] %@", searchText)
-    }
-    
-        func getMenuData (from basUrl: String){
-            PersistenceController().clear()
-            let session = URLSession(configuration: .default)
-            let url = URL(string: basUrl)
-            let task = session.dataTask(with: url!) { data, response, error in
-                if  error != nil {
-                    print(error!)
-                }else{
-                    if let myData = data {
-                        
-                        let decoder = JSONDecoder()
-                        let decodedData = try? decoder.decode(MenuList.self, from: myData)
-                        let menuList = decodedData
-                        
-                        for menu in menuList!.menu {
-                            let newDish = Dish(context: viewContext)
-                            newDish.title = menu.title
-                            newDish.price = menu.price
-                            newDish.image = menu.image
-                            
-                            try? viewContext.save()
-                        }
-                        
-                    }
-                }
-                
-            }
-            task.resume()
-            
-        }// function end
     
     
-    }// struct end
+}// struct end
 
+
+struct Menu_Previews: PreviewProvider {
     
-    struct Menu_Previews: PreviewProvider {
-        static var previews: some View {
+    static var previews: some View {
         
-            MenuView()
-        }
+        MenuView()//.environmentObject(MenuItem())
     }
-    
+}
+

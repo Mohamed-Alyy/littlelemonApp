@@ -8,97 +8,101 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @State var firstName = ""
-    @State var lastName = ""
-    @State var email = ""
-    @State var showRegistrationAlert = false
-    @State var showGoToHomeScreenAlert = false
-    @State var isLoggedIn = false
-   
-  
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 15){
-                NavigationLink(destination: HomeView(), isActive: $isLoggedIn) {
-                    Button {
-                       
-                        if firstName.isEmpty || lastName.isEmpty {
-                            showGoToHomeScreenAlert.toggle()
-                        }else{
-                            isLoggedIn = true
-                            UserDefaults.standard.set(isLoggedIn, forKey: K.kIsLoggedIn)
-                        }
-                    } label: {
-                        Text("Home")
-                    }
-                    .alert("😕You are not register yet😕 ", isPresented: $showGoToHomeScreenAlert) {
-                        Button("Ok", role: .cancel) {
-                            //
-                        }
-                    }
+@State var firstName = ""
+@State var lastName = ""
+@State var email = ""
+@State var showRegistrationAlert = false
+@State var showGoToHomeScreenAlert = false
+@State var isLoggedIn = false
 
-                }
-                
-                TextField("First name", text: $firstName)
-                    .padding(.leading ,10)
-                    .frame(height: K.tfHeight)
-                    .background(K.tfBgColor)
-                    .cornerRadius(K.tfCornerRadius)
-                TextField("Last name", text: $lastName)
-                    .padding(.leading ,10)
-                    .frame(height: K.tfHeight)
-                    .background(K.tfBgColor)
-                    .cornerRadius(K.tfCornerRadius)
-                TextField(text: $email) {
-                    Text("email")
-                }
-                .padding(.leading ,10)
-                .frame(height: K.tfHeight)
-                .background(K.tfBgColor)
-                .cornerRadius(K.tfCornerRadius)
-                
+let userIsLoggedIn = UserDefaults.standard.bool(forKey: Helper.kIsLoggedIn)
+
+    
+    var body: some View {
+NavigationView {
+
+VStack {
+    LogoView()
+   // Spacer()
+    ScrollView {
+        VStack{
+            
+            HeroView()
+            
+            profileImageView()
+           // Spacer()
+            VStack(spacing: 20) {
+                RegistrationTFView(title: "First Name", binding: $firstName)
+                RegistrationTFView(title: "Last Name", binding: $lastName)
+                RegistrationTFView(title: "Email", binding: $email)
+            }
+            .padding(.horizontal)
+            
+            //MARK: Registration Button
+            NavigationLink(destination: HomeView(), isActive: $isLoggedIn) {
                 Button {
                     if firstName.isEmpty || lastName.isEmpty || email.isEmpty {
-                        showRegistrationAlert.toggle()
+                        showRegistrationAlert = true
                         
                     }else if !email.contains("@"){
                         print("this not valide email")
+                        showGoToHomeScreenAlert = true
                         
                     } else {
-                        print("Data Saved in UserDeafult")
-                        UserDefaults.standard.set(firstName, forKey: K.kFirstName)
-                        UserDefaults.standard.set(lastName, forKey: K.kLasttName)
-                        UserDefaults.standard.set(email, forKey: K.kEmail)
+                      
+                        svaeUserData()
+                        
+                        isLoggedIn = true
                     }
-                    
                 } label: {
-                    Text("Registration")
-                }.alert("Please fill all required fields", isPresented: $showRegistrationAlert, actions: {
-                    Button("OK", role: .cancel) {}
-                })
-                
-                .frame(maxWidth: .infinity , maxHeight: K.tfHeight)
-                .background(Color.accentColor)
-                .foregroundColor(.white)
-                .font(.title3)
-                .cornerRadius(K.tfCornerRadius)
-                
-            }
-            .padding()
-            .onAppear {
-                let userIsLoggedIn = UserDefaults.standard.bool(forKey: K.kIsLoggedIn)
-                if userIsLoggedIn {
-                    isLoggedIn = true
+                    Text("Register")
+                }
+                .frame(maxWidth: .infinity,minHeight: Helper.tfHeight)
+                .background(Color.yellow)
+                .foregroundColor(.black)
+                .font(.title)
+                .cornerRadius(Helper.tfCornerRadius)
+                .alert("😕 Please fill all fields😕 ", isPresented: $showRegistrationAlert) {
+                    Button("Ok", role: .cancel) {
+                        //
+                    }
+                }
+                .alert("😕This is not valid email😕 ", isPresented: $showGoToHomeScreenAlert) {
+                    Button("Ok", role: .cancel) {
+                        //
+                    }
                 }
                 
+            }//NavigationLink
+            .padding(.horizontal)
+            .padding(.top,50)
+            
         }
-      
-        }
+         
     }
 }
 
-struct Onboarding_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingView()
+}
+.onAppear {
+    if userIsLoggedIn {
+        isLoggedIn = true
     }
+}
+
+} // Some View
+    
+    fileprivate func svaeUserData() {
+        UserDefaults.standard.set(firstName, forKey: Helper.kFirstName)
+        UserDefaults.standard.set(lastName, forKey: Helper.kLasttName)
+        UserDefaults.standard.set(email, forKey: Helper.kEmail)
+        UserDefaults.standard.setValue(true, forKey: Helper.kIsLoggedIn)
+    }
+}
+
+
+
+struct Onboarding_Previews: PreviewProvider {
+static var previews: some View {
+OnboardingView()
+}
 }
